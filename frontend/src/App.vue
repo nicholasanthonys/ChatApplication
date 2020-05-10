@@ -1,17 +1,23 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Vue from 'vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import '@/assets/custom.scss'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+
   }
 }
 </script>

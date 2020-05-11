@@ -1,70 +1,74 @@
 var Conversation = require("../models/Conversation");
-var socket = require("../database/socket");
+
+
+
+
 
 module.exports = {
-  async insert(req, res) {
-    let conversationID = req.body.conversationID;
-    let conversation = await Conversation.findById("5eb7a398f1c8b647d42b4fbe");
-    Conversation.find;
+  //post conversations/id
+  async insertMessage(req, res, id) {
+    var date = new Date();
+    let day = date.getDate(); //tanggal misalnya : 25
+    let month = date.getMonth(); //Be careful! January is 0 not 1
+    let year = date.getFullYear();
+
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    let dateString = day + "-" + (month + 1) + "-" + year + " " + hours + ":" + minutes + ":" + seconds;
+
+    let conversation = await Conversation.findById(id);
     let newMessage = {
       sender: req.body.sender,
       receiver: req.body.receiver,
-      timestamps: "2020-02-03",
+      timestamps: dateString,
       message: req.body.message,
     };
 
     conversation.logs.push(newMessage);
     conversation.save((err) => {
       if (!err) {
-        res.send({
+        res.status(201).send({
           status: "sent",
           log: conversation.logs,
         });
       } else {
-        res.send({
+        res.status(302).send({
           status: "failed",
           log: conversation.logs,
         });
       }
     });
-
-    // var newConversation = new Conversation();
-    // //tes insert to mongodb
-    // newConversation.conversationID = "123";
-    // newConversation.member = ["nicholas", "jesslyn"];
-    // newConversation.logs = [
-    //   {
-    //     sender: "nicholas",
-    //     receiver: "jeje",
-    //     timestamps: "2020-05-10 07:45:54",
-    //     message: "i love you",
-    //   },
-    //   {
-    //     sender: "jeje",
-    //     receiver: "nicholas",
-    //     timestamps: "2020-05-10 07:45:54",
-    //     message: "i love you too",
-    //   },
-    // ];
-    // newConversation.save((err, doc) => {
-    //   if (!err) {
-    //     res.send("Insert berhasil");
-    //   } else {
-    //     res.send("Insert gagal\n" + err);
-    //   }
-    // });
   },
 
-  async readAll(req, res) {
+  //post conversations/new
+  async createConversation(req, res) {
+    var conversation = new Conversation();
+    conversation.members = req.body.members;
+    conversation.logs = [];
+    
+    await conversation.save((err) => {
+      if (!err) {
+        res.status(201).send({
+          status: "create berhasil",
+          conversation: conversation,
+        });
+      } else {
+        res.status(302).send("error creating new conversation");
+      }
+    });
+  },
+
+  //get : /conversations/id
+  async getConversation(req, res, id) {
+    console.log('from express : getConversation');
     try {
-      var conversations = await Conversation.find({
-        conversationID: "123",
-      });
-      console.log("berhasil baca");
+      var conversations = await Conversation.findById(id);
       console.log(conversations);
-      res.send(conversations);
+      res.status(201).send(conversations);
     } catch (err) {
-      res.send(err);
+      console.log(err);
+      res.status(302).send(err);
     }
   },
 };

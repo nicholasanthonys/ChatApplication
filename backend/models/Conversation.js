@@ -3,9 +3,7 @@ var Schema = mongoose.Schema;
 
 var ConversationSchema = new Schema(
   {
-    conversationID: {
-      type: String,
-    },
+    //members adalah array of username
     members: {
       type: Array,
     },

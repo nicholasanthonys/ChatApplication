@@ -95,36 +95,24 @@ export default {
           this.postedMessage
         );
         if (res.status >= 200 && res.status < 300) {
-          console.log("send message ke database berhasil");
+          console.log(res.data.newMessage);
           //send message to socket
-          this.sendMessageToSocket();
+          this.sendMessageToSocket(res.data.newMessage);
           //clear postedMessage
           this.postedMessage = "";
-
-          // console.log(res.data);
-          // this.conversation = res.data;
         }
       } catch (err) {
         console.log(err);
       }
     },
-    sendMessageToSocket() {
-      //channel socket : emitMessage
-      let log = {
-        conversation_id: this.id,
-        sender: this.username,
-        receiver: "jeje",
-        // timestamps: "2020-03-03",
-        message: this.postedMessage
-      };
-      this.$socket.emit("emitMessage", log);
+    sendMessageToSocket(newMessage) {
+      this.$socket.emit("emitMessage", newMessage);
     },
     getMessageFromSocket() {
       var that = this;
       try {
         this.$socket.on("emitMessage", function(message) {
-          console.log("from getMessageFromSocket function Home");
-          console.log(message);
+          console.log('get message from socket message status ' + message.status);
           that.conversation.logs.push(message);
         });
       } catch (err) {

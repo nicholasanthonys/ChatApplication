@@ -1,5 +1,4 @@
 var User = require("../models/User");
-var socket = require("../database/socket");
 
 async function isUsernameExist(username) {
   var user = await User.findOne({ username: username });

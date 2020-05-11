@@ -1,7 +1,11 @@
 <template>
+<v-app>
+  
   <div id="app">
     <router-view />
+    <v-app><v-chip class="ma-2" color="green">tes</v-chip></v-app>
   </div>
+</v-app>
 </template>
 
 <script>
@@ -24,10 +28,3 @@ export default {
   })
 };
 </script>
-
-<style scoped>
-#app {
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>

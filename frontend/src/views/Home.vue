@@ -3,6 +3,8 @@
     <h1>this is home</h1>
     <div v-for="log in conversation.logs" :key="log.timestamps">{{log.message}}</div>
     <hr />
+    <v-chip class="ma-2" color="primary">Primary</v-chip>
+
     <ul id="chatbox">
       <li v-for="message in messages" :key="message.id">{{message}}</li>
     </ul>

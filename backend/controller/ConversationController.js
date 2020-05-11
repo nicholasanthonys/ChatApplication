@@ -28,14 +28,14 @@ module.exports = {
     conversation.logs.push(newMessage);
     conversation.save((err) => {
       if (!err) {
+        newMessage['status'] = "sent";
         res.status(201).send({
-          status: "sent",
-          log: conversation.logs,
+          newMessage: newMessage
         });
       } else {
+        newMessage['status'] = "failed";
         res.status(302).send({
-          status: "failed",
-          log: conversation.logs,
+          newMessage: newMessage,
         });
       }
     });
@@ -61,7 +61,6 @@ module.exports = {
 
   //get : /conversations/id
   async getConversation(req, res, id) {
-    console.log('from express : getConversation');
     try {
       var conversations = await Conversation.findById(id);
       console.log(conversations);

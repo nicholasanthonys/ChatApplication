@@ -4,16 +4,34 @@
       <v-col md="6" offset-md="3">
         <v-card class="pa-2" outlined tile>
           <h1>this is homes</h1>
-
           <hr />
-          <div v-for="log in conversation.logs" :key="log.timestamps">
-            <div class="my-chats" v-if="log.sender=='nicholas'">
+          <perfect-scrollbar id ="pfs">
+          <div id="screen">
+            <div v-for="log in conversation.logs" :key="log.id">
+              <div class="my-chats" v-if="log.sender==username">
+                <v-chip class="ma-2 chip-my-chat" text-color="black">
+                  <v-avatar left v-if="log.status=='failed'">
+                    <v-icon>mdi-reload</v-icon>
+                  </v-avatar>
+                  <v-avatar left v-else>
+                    <v-icon>mdi-check</v-icon>
+                  </v-avatar>
+                  {{log.message}}
+                </v-chip>
+              </div>
+              <div class="other-chats" v-else>
+                <v-chip class="ma-2 chip-other-chat" text-color="black">{{log.message}}</v-chip>
+              </div>
+
+              <!-- <div class="my-chats" v-if="log.sender=='nicholas'">
               <div class="my-chat">{{log.message}}</div>
             </div>
             <div class="other-chats" v-else>
               <div class="other-chat">{{log.message}}</div>
+              </div>-->
             </div>
           </div>
+          </perfect-scrollbar>
 
           <!-- <ul id="chatbox">
             <li v-for="message in messages" :key="message.id">{{message}}</li>
@@ -86,6 +104,12 @@ export default {
         this.show = true;
       });
     },
+    scrollToEnd() {
+      var screen = document.getElementById("pfs");
+      screen.scrollTop = screen.scrollHeight;
+      console.log("screen scrollheight ");
+      console.log( screen.scrollHeight);
+    },
     async sendMessageToDatabase() {
       try {
         let res = await sendMessage(
@@ -112,14 +136,18 @@ export default {
       var that = this;
       try {
         this.$socket.on("emitMessage", function(message) {
-          console.log('get message from socket message status ' + message.status);
+          console.log(
+            "get message from socket message status " + message.status
+          );
           that.conversation.logs.push(message);
         });
+       
       } catch (err) {
         console.log(err);
       }
     }
   },
+
   created() {
     this.$socket = io();
     this.getConversation();
@@ -127,10 +155,26 @@ export default {
   mounted() {
     console.log("from mounted");
     this.getMessageFromSocket();
+  },
+  updated(){
+    this.scrollToEnd();
   }
 };
 </script>
 <style scoped>
+.ps {
+  height: 400px;
+  overflow: auto;
+}
+#screen {
+  /* overflow: auto;
+  margin: 0 auto;
+  margin-top: 37px;
+  height: 100px;
+  border-top-style: none; */
+  height: 100px;
+  /* overflow-y: auto; */
+}
 .other-chats {
   display: flex;
   flex-wrap: wrap;
@@ -155,5 +199,30 @@ export default {
   max-width: 300px;
   border-radius: 10px;
   padding: 10px;
+}
+.v-chip {
+  align-items: unset;
+  cursor: default;
+  /* display: block; */
+  /* line-height:auto !important; */
+  /* background-color: #76ff03 !important; */
+  max-width: 300px;
+  height: auto !important;
+  outline: none;
+  /* overflow:unset !important; */
+  padding: 10px !important;
+  position: relative;
+  text-decoration: none;
+  transition-duration: 0.28s;
+  transition-property: box-shadow, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /* vertical-align:0px; */
+  white-space: normal !important;
+}
+.chip-my-chat {
+  background-color: #76ff03 !important;
+}
+.chip-other-chat {
+  background-color: #e0e0e0 !important;
 }
 </style>

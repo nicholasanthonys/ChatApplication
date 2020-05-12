@@ -1,9 +1,5 @@
 var Conversation = require("../models/Conversation");
 
-
-
-
-
 module.exports = {
   //post conversations/id
   async insertMessage(req, res, id) {
@@ -15,9 +11,19 @@ module.exports = {
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
-    let dateString = day + "-" + (month + 1) + "-" + year + " " + hours + ":" + minutes + ":" + seconds;
+    let dateString =
+      day +
+      "-" +
+      (month + 1) +
+      "-" +
+      year +
+      " " +
+      hours +
+      ":" +
+      minutes +
+      ":" +
+      seconds;
 
-    let conversation = await Conversation.findById(id);
     let newMessage = {
       sender: req.body.sender,
       receiver: req.body.receiver,
@@ -25,15 +31,28 @@ module.exports = {
       message: req.body.message,
     };
 
+    try {
+      var conversation = await Conversation.findById(id);
+    } catch (err) {
+      console.log("conversation find id error");
+      newMessage["status"] = "failed";
+      res.status(302).send({
+        newMessage: newMessage,
+      });
+    }
+
+    //set newMessage id auto increment
+    newMessage["id"] = conversation.logs.length + 1;
+
     conversation.logs.push(newMessage);
     conversation.save((err) => {
       if (!err) {
-        newMessage['status'] = "sent";
+        newMessage["status"] = "sent";
         res.status(201).send({
-          newMessage: newMessage
+          newMessage: newMessage,
         });
       } else {
-        newMessage['status'] = "failed";
+        newMessage["status"] = "failed";
         res.status(302).send({
           newMessage: newMessage,
         });
@@ -46,7 +65,7 @@ module.exports = {
     var conversation = new Conversation();
     conversation.members = req.body.members;
     conversation.logs = [];
-    
+
     await conversation.save((err) => {
       if (!err) {
         res.status(201).send({

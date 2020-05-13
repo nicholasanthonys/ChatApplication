@@ -14,6 +14,10 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 // for validation form
 import Vuelidate from 'vuelidate'
+//session
+import VueSession from 'vue-session'
+
+Vue.use(VueSession)
 
 // for validation form
 Vue.use(Vuelidate)

@@ -7,6 +7,7 @@ import SocketIO from "socket.io-client";
 import vuetify from "./plugins/vuetify";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(PerfectScrollbar);
 

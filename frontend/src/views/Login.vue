@@ -49,6 +49,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
+import { getUser } from "@/services";
 
 export default {
   mixins: [validationMixin],
@@ -74,8 +75,25 @@ export default {
     };
   },
   methods: {
+    async getUser() {
+      try {
+        let res = await getUser(this.email, this.password);
+        if (res.status >= 200 && res.status < 300) {
+          console.log("sukses");
+          this.$session.start();
+          this.$session.set("user", res.data.user);
+          console.log(res.data);
+          this.$router.push("/home");
+        }
+      } catch (err) {
+        console.log("login gagal");
+        console.log(err);
+      }
+    },
     validate() {
-      this.$refs.form.validate();
+      // this.$refs.form.validate();
+      console.log("validate clicked");
+      this.getUser();
     }
   }
 };

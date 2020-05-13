@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col md="6" offset-md="3">
         <v-card class="pa-2" outlined tile>
-          <h1>this is homes</h1>
+          <h1>Username : {{user.username}}</h1>
           <hr />
           <perfect-scrollbar id ="pfs">
           <div id="screen">
@@ -64,6 +64,9 @@ import io from "socket.io-client";
 
 export default {
   name: "Home",
+  props : {
+    user : Object
+  },
   data() {
     return {
       //misalkan untuk pengetesan pake id ini
@@ -72,7 +75,8 @@ export default {
       messages: [],
       postedMessage: "",
       show: true,
-      username: "nicholas"
+      username: this.user.username,
+      
     };
   },
   methods: {

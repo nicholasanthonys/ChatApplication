@@ -4,6 +4,11 @@ import router from "@/router";
 
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
+import vuetify from "./plugins/vuetify";
+import PerfectScrollbar from "vue2-perfect-scrollbar";
+import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
+
+Vue.use(PerfectScrollbar);
 
 Vue.use(
   new VueSocketIO({
@@ -16,5 +21,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  vuetify,
   render: (h) => h(App),
 }).$mount("#app");

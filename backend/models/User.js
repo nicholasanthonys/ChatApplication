@@ -5,11 +5,13 @@ var UserSchema = new Schema({
   username: {
     type: String,
   },
-  email : {
-    type : String,
+  email: {
+    type: String,
   },
   password: {
     type: String,
+    //supaya password tidak diambil
+    select: false,
   },
   conversations: {
     type: Array,

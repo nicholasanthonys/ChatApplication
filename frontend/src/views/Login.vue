@@ -1,63 +1,42 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
-              <v-toolbar
-                color="primary"
-                dark
-                flat
-              >
+              <v-toolbar color="primary" dark flat>
                 <v-toolbar-title>Login form</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      :href="source"
-                      icon
-                      large
-                      target="_blank"
-                      v-on="on"
-                    >
-                      <v-icon>mdi-code-tags</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Source</span>
-                </v-tooltip>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form ref="form" v-model="valid">
                   <v-text-field
-                    label="Login"
-                    name="login"
-                    prepend-icon="person"
-                    type="text"
+                    v-model="email"
+                    :rules="[rules.required,rules.emailRules]"
+                    label="E-mail"
+                    prepend-icon="email"
+                    required
                   ></v-text-field>
 
                   <v-text-field
-                    id="password"
-                    label="Password"
-                    name="password"
+                    v-model="password"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[rules.required]"
+                    :type="show1 ? 'text' : 'password'"
                     prepend-icon="lock"
-                    type="password"
+                    name="input-10-1"
+                    label="Password"
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="show1 = !show1"
                   ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary">Login</v-btn>
+
+                <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -68,9 +47,36 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-    },
+import { validationMixin } from "vuelidate";
+import { required, email } from "vuelidate/lib/validators";
+
+export default {
+  mixins: [validationMixin],
+  validations: {
+    email: { required, email },
+    password: {
+      required
+    }
+  },
+  props: {
+    source: String
+  },
+  data() {
+    return {
+      valid: false,
+      email: "",
+      password: "",
+      show1: false,
+      rules: {
+        required: value => !!value || "Field Required.",
+        emailRules: v => /.+@.+/.test(v) || "E-mail must be valid"
+      }
+    };
+  },
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    }
   }
+};
 </script>

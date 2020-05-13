@@ -1,7 +1,9 @@
+const conversationController = require("../controller/ConversationController");
+var conversationsRouter = require("../routes/conversations");
 /*
   socket IO
 */
-module.exports = function (server) {
+function sockets(server) {
   var io = require("socket.io").listen(server);
 
   io.on("connection", function (socket) {
@@ -9,8 +11,13 @@ module.exports = function (server) {
 
     //get message from client
     socket.on("emitMessage", (msg) => {
+      //konfirmasi
+      console.log("backend : message received : ");
+      console.log(msg);
       //send message to client
+
       io.emit("emitMessage", msg);
     });
   });
-};
+}
+module.exports = sockets;

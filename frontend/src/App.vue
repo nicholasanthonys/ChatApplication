@@ -3,7 +3,6 @@
   
   <div id="app">
     <router-view />
-    <v-app><v-chip class="ma-2" color="green">tes</v-chip></v-app>
   </div>
 </v-app>
 </template>

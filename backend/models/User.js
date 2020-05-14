@@ -5,8 +5,13 @@ var UserSchema = new Schema({
   username: {
     type: String,
   },
+  email: {
+    type: String,
+  },
   password: {
     type: String,
+    //supaya password tidak diambil
+    select: false,
   },
   conversations: {
     type: Array,
@@ -14,6 +19,10 @@ var UserSchema = new Schema({
   friendsListUsername: {
     type: Array,
   },
+  //picture berupa link
+  picture : {
+    type : String
+  }
 });
 
 var User = mongoose.model("User", UserSchema);

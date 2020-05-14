@@ -1,8 +1,8 @@
 var Conversation = require("../models/Conversation");
 
 module.exports = {
-  //post conversations/id
-  async insertMessage(req, res, id) {
+  //post conversation/detail
+  async insertMessage(req, res) {
     var date = new Date();
     let day = date.getDate(); //tanggal misalnya : 25
     let month = date.getMonth(); //Be careful! January is 0 not 1
@@ -32,6 +32,7 @@ module.exports = {
     };
 
     try {
+      let id = req.body.id;
       var conversation = await Conversation.findById(id);
     } catch (err) {
       console.log("conversation find id error");
@@ -55,12 +56,13 @@ module.exports = {
         newMessage["status"] = "failed";
         res.status(302).send({
           newMessage: newMessage,
+          error : err
         });
       }
     });
   },
 
-  //post conversations/new
+  //post conversation/new
   async createConversation(req, res) {
     var conversation = new Conversation();
     conversation.members = req.body.members;
@@ -79,8 +81,9 @@ module.exports = {
   },
 
   //get : /conversations/id
-  async getConversation(req, res, id) {
+  async getConversation(req, res) {
     try {
+      let id = req.body.id;
       var conversations = await Conversation.findById(id);
       console.log(conversations);
       res.status(201).send(conversations);
@@ -88,5 +91,27 @@ module.exports = {
       console.log(err);
       res.status(302).send(err);
     }
+  },
+
+  loadListChat(req, res) {
+    let username = req.body.username;
+
+    Conversation.find({ members: username }, (err, data) => {
+      let listChat = [];
+     
+      data.forEach((element) => {
+        let id = element._id;
+        let lastChat = element.logs.pop();
+        let others = element.members.filter(name => name!=username);
+        let chat = {
+          id : id,
+          others : others,
+          lastChat : lastChat
+        }
+        listChat.push(chat);
+      });
+
+      res.send(listChat);
+    });
   },
 };

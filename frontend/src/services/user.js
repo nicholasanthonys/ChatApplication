@@ -1,9 +1,14 @@
+import axios from "axios";
 
+export const getUser = async (email, password) => {
+  return axios.post("/users/login", {
+    email: email,
+    password: password,
+  });
+};
 
-// export const getUser = async (username,password)=>{
-//     return axios.post('/register',{
-//         username : username,
-//         password : password
-//     });
-// };>>>>>>> 6035bd2894d28665c8f294c74a5e130281918282
-
+export const getOtherUser = async (username) => {
+  return axios.post("/users/getotheruser", {
+    username: username,
+  });
+};

@@ -62,6 +62,18 @@ async function insert(req, res) {
   }
 }
 
+function getOtherUser(req, res) {
+  User.findOne(
+    { username: req.body.username },
+    "username picture",
+    (err, data) => {
+      if (!err) {
+        res.status(201).send(data);
+      }
+    }
+  );
+}
+
 module.exports = {
   // username: {
   //     type: String,
@@ -76,7 +88,8 @@ module.exports = {
   //     type: Array,
   //   },
 
-  isUsernameExist: isUsernameExist,
-  insert: insert,
-  getUser: getUser,
+  isUsernameExist,
+  insert,
+  getUser,
+  getOtherUser,
 };

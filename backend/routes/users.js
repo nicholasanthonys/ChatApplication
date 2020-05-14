@@ -17,6 +17,10 @@ router.post("/register",  function(req,res){
     userController.insert(req,res);
 });
 
+//utk get user di list chat, return username, picture
+router.post("/getotheruser", function(req,res){
+  userController.getOtherUser(req,res);
+});
 
 
 module.exports = router;

@@ -124,10 +124,13 @@ export default {
     },
     async sendMessageToDatabase() {
       try {
+        let receiver = this.conversation.members.filter((name)=>name!=this.username);
+        console.log('receiver is');
+        console.log(receiver);
         let res = await sendMessage(
           this.id,
           this.username,
-          "jeje",
+          receiver,
           this.postedMessage
         );
         if (res.status >= 200 && res.status < 300) {

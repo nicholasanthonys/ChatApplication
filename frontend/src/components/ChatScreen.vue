@@ -1,9 +1,9 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <v-col md="6" offset-md="3">
+
+
         <v-card class="pa-2" outlined tile>
-          <h1>this is homes</h1>
+          <h1>Username : {{user.username}}</h1>
+          <h1>id : {{id}}</h1>
           <hr />
           <perfect-scrollbar id ="pfs">
           <div id="screen">
@@ -53,9 +53,7 @@
             </b-form>
           </div>
         </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+
 </template>
 
 <script>
@@ -64,21 +62,35 @@ import io from "socket.io-client";
 
 export default {
   name: "Home",
+  props : {
+    user : Object,
+    id : String
+  },
+  watch: {
+    //whenever id change
+    id : function(){
+      console.log('id is changing');
+      this.getConversation(this.id);
+    }
+  },
   data() {
     return {
       //misalkan untuk pengetesan pake id ini
-      id: "5eb827fbb46dcb43c0cee2d8",
+   
       conversation: Object,
       messages: [],
       postedMessage: "",
       show: true,
-      username: "nicholas"
+      username: this.user.username,
+      
     };
   },
   methods: {
     async getConversation() {
       try {
-        let res = await getConversation("5eb827fbb46dcb43c0cee2d8");
+        console.log('from get conversation, id is ');
+        console.log(this.id);
+        let res = await getConversation(this.id);
         if (res.status >= 200 && res.status < 300) {
           console.log("request berhasil");
           console.log(res.data);
@@ -112,10 +124,13 @@ export default {
     },
     async sendMessageToDatabase() {
       try {
+        let receiver = this.conversation.members.filter((name)=>name!=this.username);
+        console.log('receiver is');
+        console.log(receiver);
         let res = await sendMessage(
           this.id,
           this.username,
-          "jeje",
+          receiver,
           this.postedMessage
         );
         if (res.status >= 200 && res.status < 300) {

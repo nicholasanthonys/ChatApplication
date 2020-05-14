@@ -3,6 +3,7 @@
 
         <v-card class="pa-2" outlined tile>
           <h1>Username : {{user.username}}</h1>
+          <h1>id : {{id}}</h1>
           <hr />
           <perfect-scrollbar id ="pfs">
           <div id="screen">
@@ -65,8 +66,17 @@ export default {
     user : Object,
     id : String
   },
+  watch: {
+    //whenever id change
+    id : function(){
+      console.log('id is changing');
+      this.getConversation(this.id);
+    }
+  },
   data() {
     return {
+      //misalkan untuk pengetesan pake id ini
+   
       conversation: Object,
       messages: [],
       postedMessage: "",
@@ -78,7 +88,9 @@ export default {
   methods: {
     async getConversation() {
       try {
-        let res = await getConversation("5eb827fbb46dcb43c0cee2d8");
+        console.log('from get conversation, id is ');
+        console.log(this.id);
+        let res = await getConversation(this.id);
         if (res.status >= 200 && res.status < 300) {
           console.log("request berhasil");
           console.log(res.data);

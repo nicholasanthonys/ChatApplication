@@ -1,7 +1,7 @@
 var Conversation = require("../models/Conversation");
 
 module.exports = {
-  //post conversations/id
+  //post conversation/detail
   async insertMessage(req, res) {
     var date = new Date();
     let day = date.getDate(); //tanggal misalnya : 25
@@ -56,12 +56,13 @@ module.exports = {
         newMessage["status"] = "failed";
         res.status(302).send({
           newMessage: newMessage,
+          error : err
         });
       }
     });
   },
 
-  //post conversations/new
+  //post conversation/new
   async createConversation(req, res) {
     var conversation = new Conversation();
     conversation.members = req.body.members;

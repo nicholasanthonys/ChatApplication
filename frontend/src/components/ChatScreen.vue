@@ -1,7 +1,6 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <v-col md="6" offset-md="3">
+
+
         <v-card class="pa-2" outlined tile>
           <h1>Username : {{user.username}}</h1>
           <hr />
@@ -53,9 +52,7 @@
             </b-form>
           </div>
         </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+
 </template>
 
 <script>
@@ -65,12 +62,11 @@ import io from "socket.io-client";
 export default {
   name: "Home",
   props : {
-    user : Object
+    user : Object,
+    id : String
   },
   data() {
     return {
-      //misalkan untuk pengetesan pake id ini
-      id: "5eb827fbb46dcb43c0cee2d8",
       conversation: Object,
       messages: [],
       postedMessage: "",

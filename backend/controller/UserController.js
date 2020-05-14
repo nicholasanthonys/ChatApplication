@@ -43,6 +43,9 @@ async function insert(req, res) {
       var newUser = new User();
       newUser.username = req.body.username;
       newUser.password = req.body.password;
+      newUser.email = req.body.email;
+      //default picture
+      newUser.picture = "https://cdn.vuetifyjs.com/images/lists/5.jpg";
       newUser.conversations = [];
       newUser.friendListUsername = [];
       await newUser.save((err) => {

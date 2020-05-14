@@ -19,6 +19,10 @@ var UserSchema = new Schema({
   friendsListUsername: {
     type: Array,
   },
+  //picture berupa link
+  picture : {
+    type : String
+  }
 });
 
 var User = mongoose.model("User", UserSchema);

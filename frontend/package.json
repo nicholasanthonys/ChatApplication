@@ -15,6 +15,7 @@
     "core-js": "^3.6.4",
     "engine.io": "^3.4.1",
     "engine.io-client": "^3.4.1",
+    "material-design-icons-iconfont": "^5.0.1",
     "sass-loader": "^8.0.2",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",

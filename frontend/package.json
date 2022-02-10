@@ -13,7 +13,7 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.13.1",
     "core-js": "^3.6.4",
-    "engine.io": "^3.4.1",
+    "engine.io": "^4.1.2",
     "engine.io-client": "^3.4.1",
     "material-design-icons-iconfont": "^5.0.1",
     "sass-loader": "^8.0.2",
